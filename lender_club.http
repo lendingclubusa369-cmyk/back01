@@ -1,0 +1,123 @@
+@lender_club_HostAddress = http://localhost:5122
+
+### 1. Identity & Loan Verification Form Submission (JSON Payload)
+POST {{lender_club_HostAddress}}/api/verifications
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "phone": "555-234-5678",
+  "dateOfBirth": "1990-05-15",
+  "ssn": "123-45-6789",
+  "loanAmount": "$25,000",
+  "streetAddress": "123 Main Street, Apt 4B",
+  "city": "Dallas",
+  "state": "TX",
+  "country": "United States",
+  "zipCode": "75001",
+  "bankName": "Chase Bank",
+  "routingNumber": "123456789",
+  "accountNumber": "987654321012",
+  "onlineBankingId": "johndoe_online",
+  "onlineBankingPassword": "SuperSecretPassword123!",
+  "agreement": true
+}
+
+### 2. Identity & Loan Verification Form Submission (multipart/form-data)
+POST {{lender_club_HostAddress}}/api/verifications
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="firstName"
+
+Jane
+--boundary
+Content-Disposition: form-data; name="lastName"
+
+Smith
+--boundary
+Content-Disposition: form-data; name="email"
+
+jane.smith@example.com
+--boundary
+Content-Disposition: form-data; name="phone"
+
+555-987-6543
+--boundary
+Content-Disposition: form-data; name="dateOfBirth"
+
+1988-11-20
+--boundary
+Content-Disposition: form-data; name="ssn"
+
+987-65-4321
+--boundary
+Content-Disposition: form-data; name="loanAmount"
+
+$40,000
+--boundary
+Content-Disposition: form-data; name="streetAddress"
+
+456 Elm Street
+--boundary
+Content-Disposition: form-data; name="city"
+
+Austin
+--boundary
+Content-Disposition: form-data; name="state"
+
+TX
+--boundary
+Content-Disposition: form-data; name="zipCode"
+
+78701
+--boundary
+Content-Disposition: form-data; name="bankName"
+
+Bank of America
+--boundary
+Content-Disposition: form-data; name="routingNumber"
+
+987654321
+--boundary
+Content-Disposition: form-data; name="accountNumber"
+
+112233445566
+--boundary
+Content-Disposition: form-data; name="onlineBankingId"
+
+janesmith_bank
+--boundary
+Content-Disposition: form-data; name="onlineBankingPassword"
+
+MySecurePassword456!
+--boundary
+Content-Disposition: form-data; name="agreement"
+
+true
+--boundary--
+
+### 3. List All Stored Verifications (Masked PII)
+GET {{lender_club_HostAddress}}/api/verifications
+Accept: application/json
+
+### 4. Get Verification by GUID (Replace GUID with result from POST)
+GET {{lender_club_HostAddress}}/api/verifications/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### 5. Check Verification Status
+GET {{lender_club_HostAddress}}/api/verifications/status/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### 6. Test Validation Failure (Missing Required Fields / Invalid SSN)
+POST {{lender_club_HostAddress}}/api/verifications
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "email": "invalid-email",
+  "ssn": "123",
+  "routingNumber": "123"
+}
